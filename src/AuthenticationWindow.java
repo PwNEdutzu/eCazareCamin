@@ -1,5 +1,3 @@
-package authentication;
-
 import java.awt.*;
 import javax.swing.*;
 

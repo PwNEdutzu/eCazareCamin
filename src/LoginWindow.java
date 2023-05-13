@@ -1,5 +1,3 @@
-package authentication;
-
 import javax.swing.*;
 
 public class LoginWindow extends AuthenticationWindow {
