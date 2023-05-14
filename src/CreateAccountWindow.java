@@ -8,8 +8,8 @@ public class CreateAccountWindow extends AuthenticationWindow {
     private static String accountType;
 
     public static void init() {
-        JLabel accountTypeLabel = new JLabel("Account Type:");
-        JTextField accountTypeField = new JTextField(20);
+        JLabel accountTypeLabel = new JLabel("Selectati tipul de cont:");
+        final JComboBox<String> accountTypeField = new JComboBox<String>(AccountTypes.accountTypeValues);
 
         JLabel usernameLabel = new JLabel("Username:");
         JTextField usernameField = new JTextField(20);
@@ -36,7 +36,7 @@ public class CreateAccountWindow extends AuthenticationWindow {
             username = usernameField.getText();
             email = emailField.getText();
             password = String.valueOf(passwordField.getPassword());
-            accountType = accountTypeField.getText();
+            accountType = accountTypeField.getItemAt(accountTypeField.getSelectedIndex());
             try {
                 JConnection.createAccount(username, email, password, accountType);
             } catch (SQLException throwables) {
