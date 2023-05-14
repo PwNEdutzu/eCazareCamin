@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.sql.SQLException;
 
 public class CreateAccountWindow extends AuthenticationWindow {
@@ -8,28 +9,45 @@ public class CreateAccountWindow extends AuthenticationWindow {
     private static String accountType;
 
     public static void init() {
-        JLabel accountTypeLabel = new JLabel("Selectati tipul de cont:");
-        final JComboBox<String> accountTypeField = new JComboBox<String>(AccountTypes.accountTypeValues);
+        GridLayout layout = new GridLayout(0, 1);
 
-        JLabel usernameLabel = new JLabel("Username:");
+        JPanel accountTypePanel = new JPanel(layout);
+        final JComboBox<String> accountTypeField = new JComboBox<>(AccountTypes.accountTypeValues);
+        accountTypePanel.add(new JLabel("Selectati tipul de cont:"));
+        accountTypePanel.add(accountTypeField);
+
+        JPanel usernamePanel = new JPanel(layout);
         JTextField usernameField = new JTextField(20);
+        usernamePanel.add(new JLabel(("Username:")));
+        usernamePanel.add(usernameField);
 
-        JLabel emailLabel = new JLabel("Email:");
+        JPanel emailPanel = new JPanel(layout);
         JTextField emailField = new JTextField(20);
+        emailPanel.add(new JLabel("Email:"));
+        emailPanel.add(emailField);
 
-        JLabel passwordLabel = new JLabel("Password:");
+        JPanel passwordPanel = new JPanel(layout);
         JPasswordField passwordField = new JPasswordField(20);
+        passwordPanel.add(new JLabel("Password:"));
+        passwordPanel.add(passwordField);
 
-        JLabel confirmPasswordLabel = new JLabel("Confirm Password:");
+        JPanel confirmPasswordPanel = new JPanel(layout);
         JPasswordField confirmPasswordField = new JPasswordField(20);
+        confirmPasswordPanel.add(new JLabel("Confirm password"));
+        confirmPasswordPanel.add(confirmPasswordField);
 
+        JPanel actionsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        actionsPanel.add(Box.createVerticalStrut(50)); // a spacer
         JButton backToLogin = new JButton("Inapoi la login");
+        JButton createAccountBtn = new JButton("Creeaza contul");
+        actionsPanel.add(backToLogin);
+        actionsPanel.add(createAccountBtn);
+
         backToLogin.addActionListener(ae -> {
             authenticationLayout.previous(authenticationPanel);
         });
 
         // Create new account
-        JButton createAccountBtn = new JButton("Creeaza contul");
         createAccountBtn.addActionListener(ae -> {
             System.out.println("createAcconut");
             // Get values from fields
@@ -46,17 +64,10 @@ public class CreateAccountWindow extends AuthenticationWindow {
         });
 
         // Panel Initialization
-        createAccountWindowPanel.add(accountTypeLabel);
-        createAccountWindowPanel.add(accountTypeField);
-        createAccountWindowPanel.add(usernameLabel);
-        createAccountWindowPanel.add(usernameField);
-        createAccountWindowPanel.add(emailLabel);
-        createAccountWindowPanel.add(emailField);
-        createAccountWindowPanel.add(passwordLabel);
-        createAccountWindowPanel.add(passwordField);
-        createAccountWindowPanel.add(confirmPasswordLabel);
-        createAccountWindowPanel.add(confirmPasswordField);
-        createAccountWindowPanel.add(backToLogin);
-        createAccountWindowPanel.add(createAccountBtn);
+        createAccountWindowPanel.add(accountTypePanel);
+        createAccountWindowPanel.add(emailPanel);
+        createAccountWindowPanel.add(passwordPanel);
+        createAccountWindowPanel.add(confirmPasswordPanel);
+        createAccountWindowPanel.add(actionsPanel);
     }
 }
