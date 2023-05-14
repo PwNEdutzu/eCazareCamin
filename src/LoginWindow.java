@@ -1,6 +1,8 @@
 import javax.swing.JComboBox;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
+import javax.swing.border.LineBorder;
 
 public class LoginWindow extends AuthenticationWindow {
     private static String email;
@@ -19,12 +21,29 @@ public class LoginWindow extends AuthenticationWindow {
         JTextField emailField = new JTextField(20);
         emailPanel.add(new JLabel("Email:"));
         emailPanel.add(emailField);
-
+        emailField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) { //turns the field back to white when clicked
+                emailField.setBorder(new LineBorder(Color.WHITE));
+            }
+            @Override
+            public void focusLost(FocusEvent e) { //must be implemented else focusGained wont work
+            }
+        });
 
         JPanel passwordPanel = new JPanel(layout);
         JPasswordField passwordField = new JPasswordField(20);
         passwordPanel.add(new JLabel("Password:"));
         passwordPanel.add(passwordField);
+        passwordField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                passwordField.setBorder(new LineBorder(Color.WHITE));
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+            }
+        });
 
         JPanel actionsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         actionsPanel.add(Box.createVerticalStrut(50)); // a spacer
@@ -38,6 +57,22 @@ public class LoginWindow extends AuthenticationWindow {
             email = emailField.getText();
             password = String.valueOf(passwordField.getPassword());
             accountType = accountTypeField.getItemAt(accountTypeField.getSelectedIndex());
+            boolean bothFieldsEmpty = email.isEmpty() && password.isEmpty();
+
+            if (bothFieldsEmpty) {
+                emailField.setBorder(new LineBorder(Color.RED));
+                passwordField.setBorder(new LineBorder(Color.RED));
+                return;
+            }
+            if (email.isEmpty()) {
+                emailField.setBorder(new LineBorder(Color.RED));
+                return;
+            }
+            if (password.isEmpty()) {
+                passwordField.setBorder(new LineBorder(Color.RED));
+                return;
+            }
+
             boolean loggedIn = JConnection.checkLogin(email, password, accountType);
 
             if (!loggedIn) {
