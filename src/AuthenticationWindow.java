@@ -17,13 +17,16 @@ public class AuthenticationWindow extends JPanel {
         authenticationPanel = new JPanel();
         authenticationPanel.setLayout(authenticationLayout);
 
+        // Set the layout of loginWindowPanel and createAccountWindowPanel to BoxLayout with Y_AXIS
+        loginWindowPanel.setLayout((new BoxLayout (loginWindowPanel, BoxLayout.Y_AXIS)));
+        createAccountWindowPanel.setLayout((new BoxLayout (createAccountWindowPanel, BoxLayout.Y_AXIS)));
+
         // Add some components(PANELS) to the card panel
         authenticationPanel.add(loginWindowPanel, "card1");
         authenticationPanel.add(createAccountWindowPanel, "card1");
 
         // Add the card panel and button panel to this panel
-        setLayout(new BorderLayout());
-        add(authenticationPanel, BorderLayout.CENTER);
+        add(authenticationPanel);
     }
 
     public static void init() {
@@ -31,7 +34,7 @@ public class AuthenticationWindow extends JPanel {
         AuthenticationWindow panel = new AuthenticationWindow();
         JFrame frame = new JFrame("Authentication");
         frame.getContentPane().add(panel);
-        frame.setSize(500, 500);
+        frame.setSize(800, 500);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

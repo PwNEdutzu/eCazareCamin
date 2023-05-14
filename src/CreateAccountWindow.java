@@ -58,6 +58,5 @@ public class CreateAccountWindow extends AuthenticationWindow {
         createAccountWindowPanel.add(confirmPasswordField);
         createAccountWindowPanel.add(backToLogin);
         createAccountWindowPanel.add(createAccountBtn);
-
     }
 }
