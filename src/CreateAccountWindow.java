@@ -9,7 +9,7 @@ public class CreateAccountWindow extends AuthenticationWindow {
 
     public static void init() {
         JLabel accountTypeLabel = new JLabel("Selectati tipul de cont:");
-        final JComboBox<String> accountTypeField = new JComboBox<String>(AccountTypes.accountTypeValues);
+        final JComboBox<String> accountTypeField = new JComboBox<>(AccountTypes.accountTypeValues);
 
         JLabel usernameLabel = new JLabel("Username:");
         JTextField usernameField = new JTextField(20);
@@ -31,18 +31,25 @@ public class CreateAccountWindow extends AuthenticationWindow {
         // Create new account
         JButton createAccountBtn = new JButton("Creeaza contul");
         createAccountBtn.addActionListener(ae -> {
-            System.out.println("createAcconut");
             // Get values from fields
             username = usernameField.getText();
             email = emailField.getText();
             password = String.valueOf(passwordField.getPassword());
             accountType = accountTypeField.getItemAt(accountTypeField.getSelectedIndex());
+
+            // Check if account already exists
+            boolean createAccountWithSuccess = false;
             try {
-                JConnection.createAccount(username, email, password, accountType);
+                createAccountWithSuccess  = JConnection.createAccount(username, email, password, accountType);
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
-            System.out.println("Account Created");
+
+            if (!createAccountWithSuccess) {
+                return;
+            }
+
+            System.out.println("Account created with success");
         });
 
         // Panel Initialization

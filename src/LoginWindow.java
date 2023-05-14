@@ -3,13 +3,14 @@ import javax.swing.*;
 import java.awt.*;
 
 public class LoginWindow extends AuthenticationWindow {
-    private static String username;
+    private static String email;
     private static String password;
+    private static String accountType;
     public static void init() {
         GridLayout layout = new GridLayout(0, 1);
 
         JPanel accountTypePanel = new JPanel(layout);
-        final JComboBox<String> accountTypeField = new JComboBox<String>(AccountTypes.accountTypeValues);
+        final JComboBox<String> accountTypeField = new JComboBox<>(AccountTypes.accountTypeValues);
         accountTypePanel.add(new JLabel("Selectati tipul de cont:"));
         accountTypePanel.add(accountTypeField);
 
@@ -34,9 +35,17 @@ public class LoginWindow extends AuthenticationWindow {
 
         // Actions Events
         loginBtn.addActionListener(ae -> {
-            username = emailField.getText();
+            email = emailField.getText();
             password = String.valueOf(passwordField.getPassword());
-            System.out.println("Login:" + username + password);
+            accountType = accountTypeField.getItemAt(accountTypeField.getSelectedIndex());
+            boolean loggedIn = JConnection.checkLogin(email, password, accountType);
+
+            if (!loggedIn) {
+                JOptionPane.showMessageDialog(null, "Account not found");
+                return;
+            }
+
+            System.out.println("Logged in");
         });
         createAccountBtn.addActionListener(ae -> {
             System.out.println("createAcconut");

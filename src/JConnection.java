@@ -19,14 +19,52 @@ public class JConnection {
         }
     }
 
-    public static void createAccount(String username, String email, String password, String accountType) throws SQLException {
+    public static boolean checkEmailExists(String email) {
+        boolean exists = false;
+        String query = "SELECT * FROM users WHERE email = ?";
+
+        try {
+            PreparedStatement statement = conn.prepareStatement(query);
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                exists = true;
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            System.err.println("Error while checking email existence: " + e.getMessage());
+        }
+
+        return exists;
+    }
+
+    public static boolean createAccount(String username, String email, String password, String accountType) throws SQLException {
+        boolean success = false;
+        // Check if email already exists in database
+        if (checkEmailExists(email)) {
+            JOptionPane.showMessageDialog(null, "An account with this email already exists.");
+            return false;
+        }
+
         String query = "INSERT INTO users (username, email, password, account_type) VALUES (?, ?, ?, ?)";
-        PreparedStatement parameters = conn.prepareStatement(query);
-        parameters.setString(1, username);
-        parameters.setString(2, email);
-        parameters.setString(3, password);
-        parameters.setString(4, accountType);
-        int rowsAffected = parameters.executeUpdate();
+        try {
+            PreparedStatement statement  = conn.prepareStatement(query);
+            statement.setString(1, username);
+            statement.setString(2, email);
+            statement.setString(3, password);
+            statement.setString(4, accountType);
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Account created successfully.");
+                success = true;
+            }
+            statement.close();
+        } catch (SQLException e) {
+            System.err.println("Error while creating account: " + e.getMessage());
+        }
+
+        return success;
     }
 
     public static List<User> getAllUsers() throws SQLException {
@@ -52,5 +90,24 @@ public class JConnection {
             System.out.println("---- USER ----");
         }
         return userList;
+    }
+
+    public static boolean checkLogin(String email, String password, String accountType) {
+        boolean loggedIn = false;
+        try {
+            String sql = "SELECT * FROM users WHERE email = ? AND password = ? AND account_type = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, email);
+            statement.setString(2, password);
+            statement.setString(3, accountType);
+            ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                // User exists and matches login credentials
+                loggedIn = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return loggedIn;
     }
 }
