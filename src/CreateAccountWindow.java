@@ -49,18 +49,30 @@ public class CreateAccountWindow extends AuthenticationWindow {
 
         // Create new account
         createAccountBtn.addActionListener(ae -> {
-            System.out.println("createAcconut");
             // Get values from fields
             username = usernameField.getText();
             email = emailField.getText();
             password = String.valueOf(passwordField.getPassword());
             accountType = accountTypeField.getItemAt(accountTypeField.getSelectedIndex());
+
+            // Check if account already exists
+            boolean createAccountWithSuccess = false;
             try {
-                JConnection.createAccount(username, email, password, accountType);
+                createAccountWithSuccess  = JConnection.createAccount(username, email, password, accountType);
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
-            System.out.println("Account Created");
+
+            if (!createAccountWithSuccess) {
+                return;
+            }
+
+            usernameField.setText("");
+            emailField.setText("");
+            passwordField.setText("");
+            confirmPasswordField.setText("");
+            accountTypeField.setSelectedIndex(0);
+            authenticationLayout.previous(authenticationPanel);
         });
 
         // Panel Initialization

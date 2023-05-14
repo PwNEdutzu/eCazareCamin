@@ -5,13 +5,14 @@ import java.awt.event.*;
 import javax.swing.border.LineBorder;
 
 public class LoginWindow extends AuthenticationWindow {
-    private static String username;
+    private static String email;
     private static String password;
+    private static String accountType;
     public static void init() {
         GridLayout layout = new GridLayout(0, 1);
 
         JPanel accountTypePanel = new JPanel(layout);
-        final JComboBox<String> accountTypeField = new JComboBox<String>(AccountTypes.accountTypeValues);
+        final JComboBox<String> accountTypeField = new JComboBox<>(AccountTypes.accountTypeValues);
         accountTypePanel.add(new JLabel("Selectati tipul de cont:"));
         accountTypePanel.add(accountTypeField);
 
@@ -53,16 +54,17 @@ public class LoginWindow extends AuthenticationWindow {
 
         // Actions Events
         loginBtn.addActionListener(ae -> {
-            username = emailField.getText();
+            email = emailField.getText();
             password = String.valueOf(passwordField.getPassword());
-            boolean bothFieldsEmpty = username.isEmpty() && password.isEmpty();
+            accountType = accountTypeField.getItemAt(accountTypeField.getSelectedIndex());
+            boolean bothFieldsEmpty = email.isEmpty() && password.isEmpty();
 
             if (bothFieldsEmpty) {
                 emailField.setBorder(new LineBorder(Color.RED));
                 passwordField.setBorder(new LineBorder(Color.RED));
                 return;
             }
-            if (username.isEmpty()) {
+            if (email.isEmpty()) {
                 emailField.setBorder(new LineBorder(Color.RED));
                 return;
             }
@@ -70,7 +72,16 @@ public class LoginWindow extends AuthenticationWindow {
                 passwordField.setBorder(new LineBorder(Color.RED));
                 return;
             }
-            System.out.println("Login:" + username + password);
+
+            boolean loggedIn = JConnection.checkLogin(email, password, accountType);
+
+            if (!loggedIn) {
+                JOptionPane.showMessageDialog(null, "Account not found");
+                return;
+            }
+
+            System.out.println("Logged in");
+            // TODO: Redirect user to home page after log in is with success
         });
         createAccountBtn.addActionListener(ae -> {
             System.out.println("createAcconut");
