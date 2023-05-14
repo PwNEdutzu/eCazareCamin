@@ -67,7 +67,12 @@ public class CreateAccountWindow extends AuthenticationWindow {
                 return;
             }
 
-            System.out.println("Account created with success");
+            usernameField.setText("");
+            emailField.setText("");
+            passwordField.setText("");
+            confirmPasswordField.setText("");
+            accountTypeField.setSelectedIndex(0);
+            authenticationLayout.previous(authenticationPanel);
         });
 
         // Panel Initialization

@@ -81,6 +81,7 @@ public class LoginWindow extends AuthenticationWindow {
             }
 
             System.out.println("Logged in");
+            // TODO: Redirect user to home page after log in is with success
         });
         createAccountBtn.addActionListener(ae -> {
             System.out.println("createAcconut");
