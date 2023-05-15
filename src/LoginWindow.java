@@ -24,7 +24,7 @@ public class LoginWindow extends AuthenticationWindow {
         emailField.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) { //turns the field back to white when clicked
-                emailField.setBorder(new LineBorder(Color.WHITE));
+                emailField.setBorder(new LineBorder(Color.BLACK));
             }
             @Override
             public void focusLost(FocusEvent e) { //must be implemented else focusGained wont work
@@ -38,7 +38,7 @@ public class LoginWindow extends AuthenticationWindow {
         passwordField.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                passwordField.setBorder(new LineBorder(Color.WHITE));
+                passwordField.setBorder(new LineBorder(Color.BLACK));
             }
             @Override
             public void focusLost(FocusEvent e) {
