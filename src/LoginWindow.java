@@ -83,9 +83,13 @@ public class LoginWindow extends WindowRouter {
             // Redirect on home window and initialize home window
             windowLayout.show(windowPanel, "homeWindowPanel");
             HomeWindow.init();
+            emailField.setText("");
+            passwordField.setText("");
         });
         createAccountBtn.addActionListener(ae -> {
             windowLayout.show(windowPanel, "createAccountWindowPanel");
+            emailField.setText("");
+            passwordField.setText("");
         });
 
         // Panel Initialization
