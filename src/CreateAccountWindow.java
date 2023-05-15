@@ -5,7 +5,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.sql.SQLException;
 
-public class CreateAccountWindow extends AuthenticationWindow {
+public class CreateAccountWindow extends WindowRouter {
     private static String username;
     private static String email;
     private static String password;
@@ -80,7 +80,7 @@ public class CreateAccountWindow extends AuthenticationWindow {
         actionsPanel.add(createAccountBtn);
 
         backToLogin.addActionListener(ae -> {
-            authenticationLayout.previous(authenticationPanel);
+            windowLayout.show(windowPanel, "loginWindowPanel");
         });
 
         // Create new account
@@ -136,7 +136,7 @@ public class CreateAccountWindow extends AuthenticationWindow {
             passwordField.setText("");
             confirmPasswordField.setText("");
             accountTypeField.setSelectedIndex(0);
-            authenticationLayout.previous(authenticationPanel);
+            windowLayout.show(windowPanel, "loginWindowPanel");
         });
 
         // Panel Initialization

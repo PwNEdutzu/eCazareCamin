@@ -1,37 +1,39 @@
 import java.awt.*;
 import javax.swing.*;
 
-public class AuthenticationWindow extends JPanel {
-    public static CardLayout authenticationLayout;
-    public static JPanel authenticationPanel;
+public class WindowRouter extends JPanel {
+    public static CardLayout windowLayout;
+    public static JPanel windowPanel;
     public static JPanel loginWindowPanel = new JPanel();
     public static JPanel createAccountWindowPanel = new JPanel();
+    public static JPanel homeWindowPanel = new JPanel();
 
-    public AuthenticationWindow() {
+    public WindowRouter() {
         LoginWindow.init();
         CreateAccountWindow.init();
         // Create the card layout
-        authenticationLayout = new CardLayout();
+        windowLayout = new CardLayout();
 
         // Create the card panel
-        authenticationPanel = new JPanel();
-        authenticationPanel.setLayout(authenticationLayout);
+        windowPanel = new JPanel();
+        windowPanel.setLayout(windowLayout);
 
         // Set the layout of loginWindowPanel and createAccountWindowPanel to BoxLayout with Y_AXIS
         loginWindowPanel.setLayout((new BoxLayout (loginWindowPanel, BoxLayout.Y_AXIS)));
         createAccountWindowPanel.setLayout((new BoxLayout (createAccountWindowPanel, BoxLayout.Y_AXIS)));
+        homeWindowPanel.setLayout((new BoxLayout (homeWindowPanel, BoxLayout.Y_AXIS)));
 
         // Add some components(PANELS) to the card panel
-        authenticationPanel.add(loginWindowPanel, "card1");
-        authenticationPanel.add(createAccountWindowPanel, "card1");
-
+        windowPanel.add(loginWindowPanel, "loginWindowPanel");
+        windowPanel.add(createAccountWindowPanel, "createAccountWindowPanel");
+        windowPanel.add(homeWindowPanel, "homeWindowPanel");
         // Add the card panel and button panel to this panel
-        add(authenticationPanel);
+        add(windowPanel);
     }
 
     public static void init() {
         // Create the panel and add it to a JFrame
-        AuthenticationWindow panel = new AuthenticationWindow();
+        WindowRouter panel = new WindowRouter();
         JFrame frame = new JFrame("Authentication");
         frame.getContentPane().add(panel);
         frame.setSize(800, 500);

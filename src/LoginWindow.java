@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.border.LineBorder;
 
-public class LoginWindow extends AuthenticationWindow {
+public class LoginWindow extends WindowRouter {
     private static String email;
     private static String password;
     private static String accountType;
@@ -80,12 +80,12 @@ public class LoginWindow extends AuthenticationWindow {
                 return;
             }
 
-            System.out.println("Logged in");
-            // TODO: Redirect user to home page after log in is with success
+            // Redirect on home window and initialize home window
+            windowLayout.show(windowPanel, "homeWindowPanel");
+            HomeWindow.init();
         });
         createAccountBtn.addActionListener(ae -> {
-            System.out.println("createAcconut");
-            authenticationLayout.next(authenticationPanel);
+            windowLayout.show(windowPanel, "createAccountWindowPanel");
         });
 
         // Panel Initialization
