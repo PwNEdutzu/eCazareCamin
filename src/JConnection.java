@@ -104,10 +104,32 @@ public class JConnection {
             if (result.next()) {
                 // User exists and matches login credentials
                 loggedIn = true;
+                getLoggedUser(email);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return loggedIn;
+    }
+
+    public static void getLoggedUser(String userEmail) {
+        try {
+            String sql = "SELECT * FROM users WHERE email = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, userEmail);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt("id");
+                String username = rs.getString("username");
+                String email = rs.getString("email");
+                String password = rs.getString("password");
+                String accountType = rs.getString("account_type");
+                User loggedInUser = new User(id, username, email, password, accountType);
+                UserStorage.setLoggedUser(loggedInUser);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

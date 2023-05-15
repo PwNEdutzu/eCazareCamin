@@ -113,12 +113,15 @@ public class CreateAccountWindow extends WindowRouter {
                 passwordField.setBorder(new LineBorder(Color.RED));
                 return;
             }
+
+            // Email Validation
             if(!email.matches(emailRegex)) {
                 emailField.setBorder(new LineBorder(Color.RED));
                 JOptionPane.showMessageDialog(null, "Email address is invalid!");
                 return;
             }
 
+            // Confirm Password Validation
             boolean confirmPasswordMatch = confirmPassword.equals(password);
             if (!confirmPasswordMatch) {
                 JOptionPane.showMessageDialog(null, "Passwords don't match!");
@@ -147,6 +150,7 @@ public class CreateAccountWindow extends WindowRouter {
 
         // Panel Initialization
         createAccountWindowPanel.add(accountTypePanel);
+        createAccountWindowPanel.add(usernamePanel);
         createAccountWindowPanel.add(emailPanel);
         createAccountWindowPanel.add(passwordPanel);
         createAccountWindowPanel.add(confirmPasswordPanel);
