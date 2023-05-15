@@ -73,6 +73,13 @@ public class LoginWindow extends WindowRouter {
                 return;
             }
 
+            // Email validation via regex
+            if(!email.matches(Utils.emailRegex)) {
+                emailField.setBorder(new LineBorder(Color.RED));
+                JOptionPane.showMessageDialog(null, "Email address is invalid!");
+                return;
+            }
+
             boolean loggedIn = JConnection.checkLogin(email, password, accountType);
 
             if (!loggedIn) {
