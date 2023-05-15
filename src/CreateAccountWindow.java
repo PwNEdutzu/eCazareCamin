@@ -97,6 +97,7 @@ public class CreateAccountWindow extends AuthenticationWindow {
             if (allFieldsEmpty) {
                 emailField.setBorder(new LineBorder(Color.RED));
                 passwordField.setBorder(new LineBorder(Color.RED));
+                confirmPasswordField.setBorder(new LineBorder(Color.RED));
                 return;
             }
             if (email.isEmpty()) {
