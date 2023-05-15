@@ -11,6 +11,7 @@ public class CreateAccountWindow extends WindowRouter {
     private static String password;
     private static String confirmPassword;
     private static String accountType;
+    private static final String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
 
     public static void init() {
         GridLayout layout = new GridLayout(0, 1);
@@ -110,6 +111,11 @@ public class CreateAccountWindow extends WindowRouter {
             }
             if (confirmPassword.isEmpty()) {
                 passwordField.setBorder(new LineBorder(Color.RED));
+                return;
+            }
+            if(!email.matches(emailRegex)) {
+                emailField.setBorder(new LineBorder(Color.RED));
+                JOptionPane.showMessageDialog(null, "Email address is invalid!");
                 return;
             }
 
