@@ -5,7 +5,7 @@ public class HomeWindow extends WindowRouter {
 
     public static void init() {
         // ---- User Information ----
-        User loggedUser = UserStorage.getLoggedUser();
+        User loggedUser = Storage.getLoggedUser();
         // Username and accountType Labels
         JPanel userPanel = new JPanel(new GridLayout(2, 1));
         JLabel userNameLabel = new JLabel("Username:");
@@ -46,6 +46,6 @@ public class HomeWindow extends WindowRouter {
     public static void logoutUser() {
         windowLayout.show(windowPanel, "loginWindowPanel");
         homeWindowPanel.removeAll();
-        UserStorage.clearLoggedUser();
+        Storage.clearLoggedUser();
     }
 }

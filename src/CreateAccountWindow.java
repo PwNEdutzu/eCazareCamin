@@ -130,7 +130,7 @@ public class CreateAccountWindow extends WindowRouter {
             // Check if account already exists
             boolean createAccountWithSuccess = false;
             try {
-                createAccountWithSuccess  = JConnection.createAccount(username, email, password, accountType);
+                createAccountWithSuccess  = JAuthentication.createAccount(username, email, password, accountType);
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }

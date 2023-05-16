@@ -80,7 +80,7 @@ public class LoginWindow extends WindowRouter {
                 return;
             }
 
-            boolean loggedIn = JConnection.checkLogin(email, password, accountType);
+            boolean loggedIn = JAuthentication.checkLogin(email, password, accountType);
 
             if (!loggedIn) {
                 JOptionPane.showMessageDialog(null, "Account not found");
