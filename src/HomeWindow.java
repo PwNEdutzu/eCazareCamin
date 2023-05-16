@@ -31,20 +31,16 @@ public class HomeWindow extends WindowRouter {
         accountInformationPanel.add(Box.createHorizontalStrut(500));
         accountInformationPanel.add(logoutPanel, BorderLayout.EAST);
 
-        // Student details pane creation
-        JTabbedPane studentDetailsPane = new JTabbedPane();
-
-        // Adding tabs to studentDetailsPane
-        JPanel tab1 = new JPanel();
-        JPanel tab2 = new JPanel();
-        JPanel tab3 = new JPanel();
-        studentDetailsPane.addTab("Tab 1", tab1);
-        studentDetailsPane.addTab("Tab 2", tab2);
-        studentDetailsPane.addTab("Tab 3", tab3);
+        // Switch Home Window Content based on account type (STUDENT OR MEMBRU COMISIE)
+        if (loggedUser.getAccountType().equals(AccountTypes.accountTypeStudent)) {
+            StudentTabs.create();
+        }
+        if (loggedUser.getAccountType().equals(AccountTypes.accountTypeComisie)) {
+            ComisieTabs.create();
+        }
 
         // Add all panels to homeWindowPanel
         homeWindowPanel.add(accountInformationPanel, BorderLayout.NORTH);
-        homeWindowPanel.add(studentDetailsPane, BorderLayout.CENTER);
     }
 
     public static void logoutUser() {
