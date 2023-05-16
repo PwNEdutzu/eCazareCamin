@@ -21,7 +21,7 @@ public class WindowRouter extends JPanel {
         // Set the layout of loginWindowPanel and createAccountWindowPanel to BoxLayout with Y_AXIS
         loginWindowPanel.setLayout((new BoxLayout (loginWindowPanel, BoxLayout.Y_AXIS)));
         createAccountWindowPanel.setLayout((new BoxLayout (createAccountWindowPanel, BoxLayout.Y_AXIS)));
-        homeWindowPanel.setLayout((new BoxLayout (homeWindowPanel, BoxLayout.Y_AXIS)));
+        homeWindowPanel.setLayout((new BorderLayout ()));
 
         // Add some components(PANELS) to the card panel
         windowPanel.add(loginWindowPanel, "loginWindowPanel");
@@ -37,6 +37,7 @@ public class WindowRouter extends JPanel {
         JFrame frame = new JFrame("Authentication");
         frame.getContentPane().add(panel);
         frame.setSize(800, 500);
+        frame.setResizable(false);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
