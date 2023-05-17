@@ -8,14 +8,12 @@ public class HomeWindow extends WindowRouter {
         User loggedUser = Storage.getLoggedUser();
         // Username and accountType Labels
         JPanel userPanel = new JPanel(new GridLayout(2, 1));
-        JLabel userNameLabel = new JLabel("Username:");
         JLabel userValueLabel = new JLabel(loggedUser.getUsername());
-        JLabel accountTypeLabel = new JLabel("Account Type:");
         JLabel accountTypeValue = new JLabel(loggedUser.getAccountType());
         // Add username and accountType to userPanel
-        userPanel.add(userNameLabel);
+        userPanel.add(new JLabel("Username:"));
         userPanel.add(userValueLabel);
-        userPanel.add(accountTypeLabel);
+        userPanel.add(new JLabel("Account Type:"));
         userPanel.add(accountTypeValue);
 
         JPanel logoutPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -26,10 +24,9 @@ public class HomeWindow extends WindowRouter {
         logoutPanel.add(logoutButton);
 
         // Create topside panel and add user and logout button panels
-        JPanel accountInformationPanel = new JPanel(new BorderLayout());
-        accountInformationPanel.add(userPanel, BorderLayout.WEST);
-        accountInformationPanel.add(Box.createHorizontalStrut(500));
-        accountInformationPanel.add(logoutPanel, BorderLayout.EAST);
+        JPanel accountInformationPanel = new JPanel(new GridLayout(0, 2));
+        accountInformationPanel.add(userPanel);
+        accountInformationPanel.add(logoutPanel);
 
         // Switch Home Window Content based on account type (STUDENT OR MEMBRU COMISIE)
         if (loggedUser.getAccountType().equals(AccountTypes.accountTypeStudent)) {
