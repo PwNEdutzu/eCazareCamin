@@ -92,7 +92,8 @@ public class CreateAccountWindow extends WindowRouter {
             confirmPassword = String.valueOf(confirmPasswordField.getPassword());
             accountType = accountTypeField.getItemAt(accountTypeField.getSelectedIndex());
 
-            boolean allFieldsEmpty = email.isEmpty() && password.isEmpty() && confirmPassword.isEmpty() && username.isEmpty();
+            boolean allFieldsEmpty = email.isEmpty() && password.isEmpty() && confirmPassword.isEmpty()
+                    && username.isEmpty();
 
             if (allFieldsEmpty) {
                 usernameField.setBorder(new LineBorder(Color.RED));
