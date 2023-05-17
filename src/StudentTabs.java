@@ -30,26 +30,19 @@ public class StudentTabs extends WindowRouter {
             requestDormBooking.add(submitted);
             return;
         }
-
-        requestDormBooking.setLayout(new GridLayout(0, 2, 10, 10));
+        requestDormBooking.setLayout(new GridLayout(9, 2 ,10,10));
         // Creating fields and labels for requestDormBooking panel
         JComboBox<String> colegCameraDropdown = new JComboBox<>(new String[]{"Student A", "Student B"});
-        colegCameraDropdown.setMaximumSize((new Dimension(20, 20)));
         JComboBox<String> anDropdown = new JComboBox<>(new String[]{"1", "2", "3", "4"});
         anDropdown.setSelectedIndex(0); // Sets default selection to AN 1
-        anDropdown.setMaximumSize((new Dimension(20, 20)));
-        JLabel anLabel = new JLabel("AN:");
-        JLabel domiciliuLabel = new JLabel("DOMICILIU:");
-        JLabel colegCameraLabel = new JLabel("Coleg camera:");
+        JLabel emptyspace1 = new JLabel((""));
+        JLabel emptyspace2 = new JLabel((""));
         JLabel medieAnualaLabel = new JLabel("MEDIA ANUALA:");
         JLabel medieAdmitereLabel = new JLabel("MEDIE ADMITERE:");
         JTextField domiciliuField = new JTextField();
         JTextField medieAnualaField = new JTextField();
         JTextField medieAdmitereField = new JTextField();
-        domiciliuField.setMaximumSize(new Dimension(1, 200));
-        medieAnualaField.setMaximumSize(new Dimension(1, 10));
-        medieAdmitereField.setMaximumSize(new Dimension(1, 1));
-
+        JButton createBooking = new JButton("Confirma cererea");
 
         // Add action listener to dropdown
         anDropdown.addActionListener(ae -> {
@@ -63,31 +56,34 @@ public class StudentTabs extends WindowRouter {
             if (showEntryGrade) {
                 requestDormBooking.remove(medieAnualaLabel);
                 requestDormBooking.remove(medieAnualaField);
+                requestDormBooking.remove(emptyspace2);
                 requestDormBooking.add(medieAdmitereLabel);
                 requestDormBooking.add(medieAdmitereField);
+                requestDormBooking.add(emptyspace1);
+                requestDormBooking.add(createBooking);
             } else {
                 requestDormBooking.remove(medieAdmitereLabel);
                 requestDormBooking.remove(medieAdmitereField);
+                requestDormBooking.remove(emptyspace1);
                 requestDormBooking.add(medieAnualaLabel);
                 requestDormBooking.add(medieAnualaField);
+                requestDormBooking.add(emptyspace2);
+                requestDormBooking.add(createBooking);
             }
             requestDormBooking.revalidate();
             requestDormBooking.repaint();
         });
 
-        JLabel emptySpace = new JLabel("");
-        JButton createBooking = new JButton("Confirma cererea");
-
         // Add everything to the requestDormBooking panel
-        requestDormBooking.add(colegCameraLabel);
+        requestDormBooking.add(new JLabel("Coleg camera:"));
         requestDormBooking.add(colegCameraDropdown);
-        requestDormBooking.add(domiciliuLabel);
+        requestDormBooking.add(new JLabel("Domiciliu:"));
         requestDormBooking.add(domiciliuField);
-        requestDormBooking.add(anLabel);
+        requestDormBooking.add(new JLabel("AN:"));
         requestDormBooking.add(anDropdown);
         requestDormBooking.add(medieAdmitereLabel);
         requestDormBooking.add(medieAdmitereField);
-        requestDormBooking.add(emptySpace);
+        requestDormBooking.add(emptyspace1);
         requestDormBooking.add(createBooking);
 
         createBooking.addActionListener(ae -> {
