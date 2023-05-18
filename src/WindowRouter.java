@@ -2,6 +2,8 @@ import java.awt.*;
 import javax.swing.*;
 
 public class WindowRouter extends JPanel {
+    public static JFrame frame = new JFrame("eCazareCamin");
+
     public static CardLayout windowLayout;
     public static JPanel windowPanel;
     public static JPanel loginWindowPanel = new JPanel();
@@ -34,12 +36,16 @@ public class WindowRouter extends JPanel {
     public static void init() {
         // Create the panel and add it to a JFrame
         WindowRouter panel = new WindowRouter();
-        JFrame frame = new JFrame("Authentication");
         frame.getContentPane().add(panel);
         frame.setSize(800, 500);
         frame.setResizable(false);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public static void resetFrame() {
+        homeWindowPanel.removeAll();
+        StudentTabs.studentDetailsPanel.removeAll();
     }
 }

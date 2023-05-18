@@ -33,7 +33,6 @@ public class JStudentDetails extends JConnection {
     }
 
     public static void getStudentDetails(String userId) {
-        System.out.println(userId);
         try {
             String sql = "SELECT * FROM students_details WHERE userId = ?";
             PreparedStatement statement = conn.prepareStatement(sql);

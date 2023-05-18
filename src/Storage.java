@@ -21,4 +21,13 @@ public class Storage {
     public static StudentDetails getStudentDetails() {
         return studentDetails;
     }
+
+    public static void clearStudentsDetails() {
+        studentDetails = null;
+    }
+
+    public static void resetAllStorages() {
+        clearLoggedUser();
+        clearStudentsDetails();
+    }
 }

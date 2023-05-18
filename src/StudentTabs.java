@@ -3,8 +3,7 @@ import java.awt.*;
 import java.sql.SQLException;
 
 public class StudentTabs extends WindowRouter {
-    private static final User loggedUser = Storage.getLoggedUser();
-    private static final JPanel studentDetailsPanel = new JPanel();
+    public static JPanel studentDetailsPanel = new JPanel();
 
     public static void create() {
         // Student details panel creation
@@ -22,6 +21,8 @@ public class StudentTabs extends WindowRouter {
     }
 
     public static void createStudentsDetails() {
+        User loggedUser = Storage.getLoggedUser();
+
         studentDetailsPanel.setLayout(new GridLayout(0, 2, 10, 10));
         JTextField numeField = new JTextField(20);
         JTextField prenumeField = new JTextField(20);
