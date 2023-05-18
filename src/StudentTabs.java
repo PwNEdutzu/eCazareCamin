@@ -3,9 +3,8 @@ import java.awt.*;
 import java.sql.SQLException;
 
 public class StudentTabs extends WindowRouter {
-    private static final User loggedUser = Storage.getLoggedUser();
-    private static final JPanel studentDetailsPanel = new JPanel();
-    private static final JPanel requestDormBooking = new JPanel();
+    public static JPanel studentDetailsPanel = new JPanel();
+    public static final JPanel requestDormBooking = new JPanel();
 
     public static void create() {
         // Student details panel creation
@@ -23,6 +22,8 @@ public class StudentTabs extends WindowRouter {
     }
 
     public static void createBookingDetails() {
+        User loggedUser = Storage.getLoggedUser();
+
         JBookingDetails.getBookingDetails(String.valueOf(loggedUser.getId()));
         BookingDetails bookingDetails = Storage.getBookingDetails();
         if(bookingDetails != null){
@@ -103,6 +104,8 @@ public class StudentTabs extends WindowRouter {
     }
 
     public static void createStudentsDetails() {
+        User loggedUser = Storage.getLoggedUser();
+
         studentDetailsPanel.setLayout(new GridLayout(0, 2, 10, 10));
         JTextField numeField = new JTextField(20);
         JTextField prenumeField = new JTextField(20);
@@ -112,6 +115,7 @@ public class StudentTabs extends WindowRouter {
         JTextField cnpField = new JTextField(20);
         JTextField domiciliuField = new JTextField(20);
         final JComboBox<String> tipDeStudiiDropDown = new JComboBox<>(new String[]{"Cu Taxa", "Fara Taxa"});
+        JButton submitStudentDetailsBtn = new JButton("Adauga");
 
         // Get Student Details from backend if exists and populate data into fields
         JStudentDetails.getStudentDetails(String.valueOf(loggedUser.getId()));
@@ -127,6 +131,7 @@ public class StudentTabs extends WindowRouter {
             cnpField.setText(studentDetails.getCNP());
             domiciliuField.setText(studentDetails.getDomiciliu());
             tipDeStudiiDropDown.setSelectedItem(studentDetails.getTipDeStudii());
+            submitStudentDetailsBtn.setText("Editeaza");
         }
 
         studentDetailsPanel.add(new JLabel("Nume:"));
@@ -147,11 +152,11 @@ public class StudentTabs extends WindowRouter {
         studentDetailsPanel.add(tipDeStudiiDropDown);
 
         JLabel emptySpace = new JLabel("");
-        JButton submitDetails = new JButton("Salveaza");
         studentDetailsPanel.add(emptySpace);
-        studentDetailsPanel.add(submitDetails);
+        studentDetailsPanel.add(submitStudentDetailsBtn);
 
-        submitDetails.addActionListener(ae -> {
+        // Listen to Submit Student Details Button
+        submitStudentDetailsBtn.addActionListener(ae -> {
             String nume = numeField.getText();
             String prenume = prenumeField.getText();
             String facultate = facultateField.getText();
@@ -161,9 +166,14 @@ public class StudentTabs extends WindowRouter {
             String domiciliu = domiciliuField.getText();
             String tipDeStudii = tipDeStudiiDropDown.getItemAt(tipDeStudiiDropDown.getSelectedIndex());
 
-            // Add student details to students_details table in database/backend
+            // Add or Update student details to students_details table in database/backend
             try {
-                JStudentDetails.addStudentsDetails(loggedUser.getId(),nume, prenume, facultate, anFacultate, specializare, CNP, domiciliu, tipDeStudii);
+                JStudentDetails.addOrUpdateStudentsDetails(loggedUser.getId(),nume, prenume, facultate, anFacultate, specializare, CNP, domiciliu, tipDeStudii);
+                // Alert User if add/update is successful
+                String addOrUpdateDialogMessage = submitStudentDetailsBtn.getText().equals("Editeaza") ? "Editare cu succes" : "Adaugare cu succes";
+                JOptionPane.showMessageDialog(null, addOrUpdateDialogMessage);
+                submitStudentDetailsBtn.setText("Editeaza");
+
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }

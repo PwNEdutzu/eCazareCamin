@@ -41,8 +41,8 @@ public class HomeWindow extends WindowRouter {
     }
 
     public static void logoutUser() {
+        Storage.resetAllStorages();
         windowLayout.show(windowPanel, "loginWindowPanel");
-        homeWindowPanel.removeAll();
-        Storage.clearLoggedUser();
+        WindowRouter.resetFrame();
     }
 }

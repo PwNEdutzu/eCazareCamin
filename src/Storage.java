@@ -1,7 +1,6 @@
 public class Storage {
     private static User loggedUser;
     private static StudentDetails studentDetails;
-
     private static BookingDetails bookingDetails;
 
     public static void setLoggedUser(User user) {
@@ -23,11 +22,26 @@ public class Storage {
     public static StudentDetails getStudentDetails() {
         return studentDetails;
     }
+
+    public static void clearStudentsDetails() {
+        studentDetails = null;
+    }
+
     public static void setBookingDetails(BookingDetails details) {
         bookingDetails = details;
     }
 
     public static BookingDetails getBookingDetails() {
         return bookingDetails;
+    }
+
+    public static void clearBookingDetails() {
+        bookingDetails = null;
+    }
+
+    public static void resetAllStorages() {
+        clearLoggedUser();
+        clearStudentsDetails();
+        clearBookingDetails();
     }
 }

@@ -4,36 +4,69 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class JStudentDetails extends JConnection {
-    public static void addStudentsDetails(
+    public static void addOrUpdateStudentsDetails(
             int userId, String nume, String prenume, String facultate, String anFacultate,
             String specializare, String CNP, String domiciliu, String tipDeStudii) throws SQLException {
 
-        String query = "INSERT INTO students_details " +
+        String selectQuery = "SELECT * FROM students_details WHERE userId = ?";
+        String updateQuery = "UPDATE students_details SET nume = ?, prenume = ?, facultate = ?, " +
+                "anFacultate = ?, specializare = ?, cnp = ?, domiciliu = ?, tipDeStudii = ? WHERE userId = ?";
+        String insertQuery = "INSERT INTO students_details " +
                 "(userId, nume, prenume, facultate, anFacultate, specializare, cnp, domiciliu, tipDeStudii) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
         try {
-            PreparedStatement statement  = conn.prepareStatement(query);
-            statement.setString(1, String.valueOf(userId));
-            statement.setString(2, nume);
-            statement.setString(3, prenume);
-            statement.setString(4, facultate);
-            statement.setString(5, anFacultate);
-            statement.setString(6, specializare);
-            statement.setString(7, CNP);
-            statement.setString(8, domiciliu);
-            statement.setString(9, tipDeStudii);
-            int rowsAffected = statement.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("Student Details added");
+            // Check if the user already exists
+            PreparedStatement selectStatement = conn.prepareStatement(selectQuery);
+            selectStatement.setInt(1, userId);
+            ResultSet resultSet = selectStatement.executeQuery();
+            boolean userExists = resultSet.next();
+            selectStatement.close();
+
+            // Perform update or insert based on user existence
+
+            if (userExists) { // Update if user exists
+                PreparedStatement updateStatement = conn.prepareStatement(updateQuery);
+                updateStatement.setString(1, nume);
+                updateStatement.setString(2, prenume);
+                updateStatement.setString(3, facultate);
+                updateStatement.setString(4, anFacultate);
+                updateStatement.setString(5, specializare);
+                updateStatement.setString(6, CNP);
+                updateStatement.setString(7, domiciliu);
+                updateStatement.setString(8, tipDeStudii);
+                updateStatement.setInt(9, userId);
+                int rowsAffected = updateStatement.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("Student details updated");
+                }
+                updateStatement.close();
+                return;
             }
-            statement.close();
+
+            // Add if user doesn't exists
+            PreparedStatement insertStatement = conn.prepareStatement(insertQuery);
+            insertStatement.setInt(1, userId);
+            insertStatement.setString(2, nume);
+            insertStatement.setString(3, prenume);
+            insertStatement.setString(4, facultate);
+            insertStatement.setString(5, anFacultate);
+            insertStatement.setString(6, specializare);
+            insertStatement.setString(7, CNP);
+            insertStatement.setString(8, domiciliu);
+            insertStatement.setString(9, tipDeStudii);
+            int rowsAffected = insertStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Student details added");
+            }
+            insertStatement.close();
+
         } catch (SQLException e) {
-            System.err.println("Error while adding student details " + e.getMessage());
+            System.err.println("Error while adding or updating student details: " + e.getMessage());
         }
     }
 
     public static void getStudentDetails(String userId) {
-        System.out.println(userId);
         try {
             String sql = "SELECT * FROM students_details WHERE userId = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
