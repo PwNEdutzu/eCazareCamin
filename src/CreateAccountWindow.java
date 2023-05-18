@@ -22,7 +22,7 @@ public class CreateAccountWindow extends WindowRouter {
 
         JPanel usernamePanel = new JPanel(layout);
         JTextField usernameField = new JTextField(20);
-        usernamePanel.add(new JLabel(("Username:")));
+        usernamePanel.add(new JLabel(("Nume si prenume:")));
         usernamePanel.add(usernameField);
         usernameField.addFocusListener(new FocusListener() {
             @Override
@@ -92,12 +92,18 @@ public class CreateAccountWindow extends WindowRouter {
             confirmPassword = String.valueOf(confirmPasswordField.getPassword());
             accountType = accountTypeField.getItemAt(accountTypeField.getSelectedIndex());
 
-            boolean allFieldsEmpty = email.isEmpty() && password.isEmpty() && confirmPassword.isEmpty();
+            boolean allFieldsEmpty = email.isEmpty() && password.isEmpty() && confirmPassword.isEmpty()
+                    && username.isEmpty();
 
             if (allFieldsEmpty) {
+                usernameField.setBorder(new LineBorder(Color.RED));
                 emailField.setBorder(new LineBorder(Color.RED));
                 passwordField.setBorder(new LineBorder(Color.RED));
                 confirmPasswordField.setBorder(new LineBorder(Color.RED));
+                return;
+            }
+            if (username.isEmpty()) {
+                usernameField.setBorder(new LineBorder(Color.RED));
                 return;
             }
             if (email.isEmpty()) {
