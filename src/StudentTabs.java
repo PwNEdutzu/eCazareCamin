@@ -5,6 +5,7 @@ import java.sql.SQLException;
 public class StudentTabs extends WindowRouter {
     private static final User loggedUser = Storage.getLoggedUser();
     private static final JPanel studentDetailsPanel = new JPanel();
+    private static final JPanel requestDormBooking = new JPanel();
 
     public static void create() {
         // Student details panel creation
@@ -12,13 +13,93 @@ public class StudentTabs extends WindowRouter {
 
         // Adding tabs to studentDetailsPane
         createStudentsDetails();
-        JPanel requestDormBooking = new JPanel();
+        createBookingDetails();
 
         studentJTabs.addTab("Detalii Student", studentDetailsPanel);
         studentJTabs.addTab("Cerere de cazare", requestDormBooking);
 
         // Add student tabs to home window panel
         homeWindowPanel.add(studentJTabs, BorderLayout.CENTER);
+    }
+
+    public static void createBookingDetails() {
+        JBookingDetails.getBookingDetails(String.valueOf(loggedUser.getId()));
+        BookingDetails bookingDetails = Storage.getBookingDetails();
+        if(bookingDetails != null){
+            JTextField submitted = new JTextField("Cererea a fost deja trimisa.");
+            requestDormBooking.add(submitted);
+            return;
+        }
+        requestDormBooking.setLayout(new GridLayout(9, 2 ,10,10));
+        // Creating fields and labels for requestDormBooking panel
+        JComboBox<String> colegCameraDropdown = new JComboBox<>(new String[]{"Student A", "Student B"});
+        JComboBox<String> anDropdown = new JComboBox<>(new String[]{"1", "2", "3", "4"});
+        anDropdown.setSelectedIndex(0); // Sets default selection to AN 1
+        JLabel emptyspace1 = new JLabel((""));
+        JLabel emptyspace2 = new JLabel((""));
+        JLabel medieAnualaLabel = new JLabel("MEDIA ANUALA:");
+        JLabel medieAdmitereLabel = new JLabel("MEDIE ADMITERE:");
+        JTextField domiciliuField = new JTextField();
+        JTextField medieAnualaField = new JTextField();
+        JTextField medieAdmitereField = new JTextField();
+        JButton createBooking = new JButton("Confirma cererea");
+
+        // Add action listener to dropdown
+        anDropdown.addActionListener(ae -> {
+            int selectedYear = Integer.parseInt((String) anDropdown.getSelectedItem());
+            boolean showEntryGrade = (selectedYear == 1); // Show entryGradeField only for year 1
+            medieAdmitereLabel.setVisible(showEntryGrade);
+            medieAdmitereField.setVisible(showEntryGrade);
+            medieAnualaLabel.setVisible(!showEntryGrade);
+            medieAnualaField.setVisible((!showEntryGrade));
+
+            if (showEntryGrade) {
+                requestDormBooking.remove(medieAnualaLabel);
+                requestDormBooking.remove(medieAnualaField);
+                requestDormBooking.remove(emptyspace2);
+                requestDormBooking.add(medieAdmitereLabel);
+                requestDormBooking.add(medieAdmitereField);
+                requestDormBooking.add(emptyspace1);
+                requestDormBooking.add(createBooking);
+            } else {
+                requestDormBooking.remove(medieAdmitereLabel);
+                requestDormBooking.remove(medieAdmitereField);
+                requestDormBooking.remove(emptyspace1);
+                requestDormBooking.add(medieAnualaLabel);
+                requestDormBooking.add(medieAnualaField);
+                requestDormBooking.add(emptyspace2);
+                requestDormBooking.add(createBooking);
+            }
+            requestDormBooking.revalidate();
+            requestDormBooking.repaint();
+        });
+
+        // Add everything to the requestDormBooking panel
+        requestDormBooking.add(new JLabel("Coleg camera:"));
+        requestDormBooking.add(colegCameraDropdown);
+        requestDormBooking.add(new JLabel("Domiciliu:"));
+        requestDormBooking.add(domiciliuField);
+        requestDormBooking.add(new JLabel("AN:"));
+        requestDormBooking.add(anDropdown);
+        requestDormBooking.add(medieAdmitereLabel);
+        requestDormBooking.add(medieAdmitereField);
+        requestDormBooking.add(emptyspace1);
+        requestDormBooking.add(createBooking);
+
+        createBooking.addActionListener(ae -> {
+            String colegCamera = colegCameraDropdown.getItemAt(colegCameraDropdown.getSelectedIndex());
+            String an = anDropdown.getItemAt(anDropdown.getSelectedIndex());
+            String domiciliu = domiciliuField.getText();
+            String medieAnuala = medieAnualaField.getText();
+            String medieAdmitere = medieAdmitereField.getText();
+
+
+            try {
+                JBookingDetails.addBookingDetails(loggedUser.getId(), colegCamera, domiciliu, an, medieAnuala, medieAdmitere);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        });
     }
 
     public static void createStudentsDetails() {
