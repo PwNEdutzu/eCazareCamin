@@ -32,6 +32,7 @@ public class StudentTabs extends WindowRouter {
         JTextField cnpField = new JTextField(20);
         JTextField domiciliuField = new JTextField(20);
         final JComboBox<String> tipDeStudiiDropDown = new JComboBox<>(new String[]{"Cu Taxa", "Fara Taxa"});
+        JButton submitStudentDetailsBtn = new JButton("Adauga");
 
         // Get Student Details from backend if exists and populate data into fields
         JStudentDetails.getStudentDetails(String.valueOf(loggedUser.getId()));
@@ -47,6 +48,7 @@ public class StudentTabs extends WindowRouter {
             cnpField.setText(studentDetails.getCNP());
             domiciliuField.setText(studentDetails.getDomiciliu());
             tipDeStudiiDropDown.setSelectedItem(studentDetails.getTipDeStudii());
+            submitStudentDetailsBtn.setText("Editeaza");
         }
 
         studentDetailsPanel.add(new JLabel("Nume:"));
@@ -67,11 +69,11 @@ public class StudentTabs extends WindowRouter {
         studentDetailsPanel.add(tipDeStudiiDropDown);
 
         JLabel emptySpace = new JLabel("");
-        JButton submitDetails = new JButton("Salveaza");
         studentDetailsPanel.add(emptySpace);
-        studentDetailsPanel.add(submitDetails);
+        studentDetailsPanel.add(submitStudentDetailsBtn);
 
-        submitDetails.addActionListener(ae -> {
+        // Listen to Submit Student Details Button
+        submitStudentDetailsBtn.addActionListener(ae -> {
             String nume = numeField.getText();
             String prenume = prenumeField.getText();
             String facultate = facultateField.getText();
@@ -81,9 +83,14 @@ public class StudentTabs extends WindowRouter {
             String domiciliu = domiciliuField.getText();
             String tipDeStudii = tipDeStudiiDropDown.getItemAt(tipDeStudiiDropDown.getSelectedIndex());
 
-            // Add student details to students_details table in database/backend
+            // Add or Update student details to students_details table in database/backend
             try {
-                JStudentDetails.addStudentsDetails(loggedUser.getId(),nume, prenume, facultate, anFacultate, specializare, CNP, domiciliu, tipDeStudii);
+                JStudentDetails.addOrUpdateStudentsDetails(loggedUser.getId(),nume, prenume, facultate, anFacultate, specializare, CNP, domiciliu, tipDeStudii);
+                // Alert User if add/update is successful
+                String addOrUpdateDialogMessage = submitStudentDetailsBtn.getText().equals("Editeaza") ? "Editare cu succes" : "Adaugare cu succes";
+                JOptionPane.showMessageDialog(null, addOrUpdateDialogMessage);
+                submitStudentDetailsBtn.setText("Editeaza");
+
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
