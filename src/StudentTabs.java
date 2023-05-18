@@ -1,5 +1,8 @@
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.sql.SQLException;
 
 public class StudentTabs extends WindowRouter {
@@ -27,7 +30,7 @@ public class StudentTabs extends WindowRouter {
         JBookingDetails.getBookingDetails(String.valueOf(loggedUser.getId()));
         BookingDetails bookingDetails = Storage.getBookingDetails();
         if(bookingDetails != null){
-            JTextField submitted = new JTextField("Cererea a fost deja trimisa.");
+            JLabel submitted = new JLabel("Cererea a fost deja trimisa.");
             requestDormBooking.add(submitted);
             return;
         }
@@ -97,6 +100,10 @@ public class StudentTabs extends WindowRouter {
 
             try {
                 JBookingDetails.addBookingDetails(loggedUser.getId(), colegCamera, domiciliu, an, medieAnuala, medieAdmitere);
+                StudentTabs.requestDormBooking.removeAll();
+                requestDormBooking.repaint();
+                requestDormBooking.revalidate();
+                createBookingDetails();
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
@@ -113,6 +120,15 @@ public class StudentTabs extends WindowRouter {
         JTextField facultateAnField = new JTextField(20);
         JTextField specializareField = new JTextField(20);
         JTextField cnpField = new JTextField(20);
+        cnpField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                cnpField.setBorder(new LineBorder(Color.BLACK));
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+            }
+        });
         JTextField domiciliuField = new JTextField(20);
         final JComboBox<String> tipDeStudiiDropDown = new JComboBox<>(new String[]{"Cu Taxa", "Fara Taxa"});
         JButton submitStudentDetailsBtn = new JButton("Adauga");
@@ -165,6 +181,12 @@ public class StudentTabs extends WindowRouter {
             String CNP = cnpField.getText();
             String domiciliu = domiciliuField.getText();
             String tipDeStudii = tipDeStudiiDropDown.getItemAt(tipDeStudiiDropDown.getSelectedIndex());
+
+            if(!CNP.matches(Utils.cnpRegex)) {
+                cnpField.setBorder(new LineBorder(Color.RED));
+                JOptionPane.showMessageDialog(null, "CNP is invalid!");
+                return;
+            }
 
             // Add or Update student details to students_details table in database/backend
             try {
