@@ -8,6 +8,7 @@ import java.sql.SQLException;
 public class StudentTabs extends WindowRouter {
     public static JPanel studentDetailsPanel = new JPanel();
     public static final JPanel requestDormBooking = new JPanel();
+    public static final JPanel bookingListPanel = new JPanel();
 
     public static void create() {
         // Student details panel creation
@@ -16,9 +17,11 @@ public class StudentTabs extends WindowRouter {
         // Adding tabs to studentDetailsPane
         createStudentsDetails();
         createBookingDetails();
+        BookingList.create(bookingListPanel);
 
         studentJTabs.addTab("Detalii Student", studentDetailsPanel);
         studentJTabs.addTab("Cerere de cazare", requestDormBooking);
+        studentJTabs.addTab("Lista cereri de cazare", bookingListPanel);
 
         // Add student tabs to home window panel
         homeWindowPanel.add(studentJTabs, BorderLayout.CENTER);
@@ -104,6 +107,11 @@ public class StudentTabs extends WindowRouter {
                 requestDormBooking.repaint();
                 requestDormBooking.revalidate();
                 createBookingDetails();
+                // Remount Booking List on add(refetch data from database)
+                bookingListPanel.removeAll();
+                bookingListPanel.repaint();
+                bookingListPanel.revalidate();
+                BookingList.create(bookingListPanel);
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
@@ -200,5 +208,9 @@ public class StudentTabs extends WindowRouter {
                 throwables.printStackTrace();
             }
         });
+    }
+
+    public static void createBookingList() {
+        JBookingDetails.getBookingList();
     }
 }

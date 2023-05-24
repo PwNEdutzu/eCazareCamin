@@ -36,7 +36,7 @@ public class BookingDetails {
     }
 
     public String getMedieAnuala() {
-        return medieAdmitere;
+        return medieAnuala;
     }
 }
 
