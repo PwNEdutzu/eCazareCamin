@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StudentTabs extends WindowRouter {
     public static JPanel studentDetailsPanel = new JPanel();
@@ -39,10 +41,12 @@ public class StudentTabs extends WindowRouter {
         }
         requestDormBooking.setLayout(new GridLayout(9, 2 ,10,10));
         // Creating fields and labels for requestDormBooking panel
-        JComboBox<String> colegCameraDropdown = new JComboBox<>();
-        for (String element : JStudentDetails.getStudentsName()) {
-            colegCameraDropdown.addItem(element);
-        }
+
+        // Coleg Camera dropdown works with a Constructor Class - StudentDetails
+        // The displayed information to the user will be "nume", the second element from the array
+        List<StudentDetails> studentsNameList = JStudentDetails.getStudentsName();
+        JComboBox<StudentDetails> colegCameraDropdown = new JComboBox<>(studentsNameList.toArray(new StudentDetails[1]));
+
         JComboBox<String> anDropdown = new JComboBox<>(new String[]{"1", "2", "3", "4"});
         anDropdown.setSelectedIndex(0); // Sets default selection to AN 1
         JLabel emptyspace1 = new JLabel((""));
@@ -97,7 +101,12 @@ public class StudentTabs extends WindowRouter {
         requestDormBooking.add(createBooking);
 
         createBooking.addActionListener(ae -> {
-            String colegCamera = colegCameraDropdown.getItemAt(colegCameraDropdown.getSelectedIndex());
+            // Now, we sent to database the userId of the selected student
+            StudentDetails studentInfo = (StudentDetails) colegCameraDropdown.getSelectedItem();
+            String colegCamera = "";
+            if (studentInfo != null) {
+                colegCamera = studentInfo.getUserId();
+            }
             String an = anDropdown.getItemAt(anDropdown.getSelectedIndex());
             String domiciliu = domiciliuField.getText();
             String medieAnuala = medieAnualaField.getText();

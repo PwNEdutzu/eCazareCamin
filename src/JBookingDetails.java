@@ -70,15 +70,6 @@ public class JBookingDetails extends JConnection {
                 BookingDetails bookingDetails = new BookingDetails(userId, colegCamera, domiciliu, an, medieAnuala, medieAdmitere);
                 bookingList.add(bookingDetails);
             }
-            for (BookingDetails booking : bookingList) {
-                System.out.println(booking.getUserId());
-                System.out.println(booking.getColegCamera());
-                System.out.println(booking.getDomiciliu());
-                System.out.println(booking.getAn());
-                System.out.println(booking.getMedieAnuala());
-                System.out.println(booking.getMedieAdmitere());
-                System.out.println("---- BOOKING ----");
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

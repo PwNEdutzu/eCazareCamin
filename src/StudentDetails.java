@@ -59,4 +59,9 @@ public class StudentDetails {
     public String getTipDeStudii() {
         return tipDeStudii;
     }
+
+    @Override
+    public String toString() {
+        return nume;
+    }
 }
