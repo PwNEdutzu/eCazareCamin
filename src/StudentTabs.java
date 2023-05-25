@@ -39,7 +39,10 @@ public class StudentTabs extends WindowRouter {
         }
         requestDormBooking.setLayout(new GridLayout(9, 2 ,10,10));
         // Creating fields and labels for requestDormBooking panel
-        JComboBox<String> colegCameraDropdown = new JComboBox<>(new String[]{"Student A", "Student B"});
+        JComboBox<String> colegCameraDropdown = new JComboBox<>();
+        for (String element : JStudentDetails.getStudentsName()) {
+            colegCameraDropdown.addItem(element);
+        }
         JComboBox<String> anDropdown = new JComboBox<>(new String[]{"1", "2", "3", "4"});
         anDropdown.setSelectedIndex(0); // Sets default selection to AN 1
         JLabel emptyspace1 = new JLabel((""));
@@ -208,9 +211,5 @@ public class StudentTabs extends WindowRouter {
                 throwables.printStackTrace();
             }
         });
-    }
-
-    public static void createBookingList() {
-        JBookingDetails.getBookingList();
     }
 }

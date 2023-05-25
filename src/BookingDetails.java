@@ -35,8 +35,7 @@ public class BookingDetails {
         return medieAdmitere;
     }
 
-    public String getMedieAnuala() {
-        return medieAnuala;
+    public String getMedieAnuala() { return medieAnuala; }
     }
-}
+
 
