@@ -1,6 +1,9 @@
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JBookingDetails extends JConnection {
 
@@ -48,5 +51,37 @@ public class JBookingDetails extends JConnection {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static List<BookingDetails> getBookingList()  {
+        List<BookingDetails> bookingList = new ArrayList<>();
+
+        try {
+            String query = "SELECT * FROM booking_details";
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                String userId = rs.getString("userId");
+                String colegCamera = rs.getString("colegCamera");
+                String domiciliu = rs.getString("domiciliu");
+                String an = rs.getString("an");
+                String medieAnuala = rs.getString("medieAnuala");
+                String medieAdmitere = rs.getString("medieAdmitere");
+                BookingDetails bookingDetails = new BookingDetails(userId, colegCamera, domiciliu, an, medieAnuala, medieAdmitere);
+                bookingList.add(bookingDetails);
+            }
+            for (BookingDetails booking : bookingList) {
+                System.out.println(booking.getUserId());
+                System.out.println(booking.getColegCamera());
+                System.out.println(booking.getDomiciliu());
+                System.out.println(booking.getAn());
+                System.out.println(booking.getMedieAnuala());
+                System.out.println(booking.getMedieAdmitere());
+                System.out.println("---- BOOKING ----");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookingList;
     }
 }
