@@ -6,7 +6,9 @@ public class BookingDetails {
     private String medieAdmitere;
     private String medieAnuala;
 
-    public BookingDetails(String userId, String colegCamera, String domiciliu, String an, String medieAdmitere, String medieAnuala){
+    private String medie;
+
+    public BookingDetails(String userId, String colegCamera, String domiciliu, String an, String medieAdmitere, String medieAnuala, String medie) {
 
         this.userId = userId;
         this.colegCamera = colegCamera;
@@ -14,6 +16,7 @@ public class BookingDetails {
         this.an = an;
         this.medieAdmitere = medieAdmitere;
         this.medieAnuala = medieAnuala;
+        this.medie = medie;
     }
     public String getUserId() {
         return userId;
@@ -36,6 +39,10 @@ public class BookingDetails {
     }
 
     public String getMedieAnuala() { return medieAnuala; }
+
+    public String getMedie() {
+     return medie;
     }
+}
 
 
