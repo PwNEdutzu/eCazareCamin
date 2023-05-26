@@ -26,6 +26,7 @@ public class DormRepartitionList {
         repartitionTable.addColumn("An");
         repartitionTable.addColumn("M. Anuala");
         repartitionTable.addColumn("M. Admitere");
+        repartitionTable.addColumn("Tip Taxa");
 
         // Add user data to the model
         for (BookingDetails repartition : repartitionList) {
@@ -37,7 +38,8 @@ public class DormRepartitionList {
                     repartition.getDomiciliu(),
                     repartition.getAn(),
                     repartition.getMedieAnuala(),
-                    repartition.getMedieAdmitere()
+                    repartition.getMedieAdmitere(),
+                    formatTipTaxa(repartition.getFaraTaxa())
             };
             repartitionTable.addRow(rowData);
         }
@@ -49,5 +51,11 @@ public class DormRepartitionList {
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setPreferredSize(new Dimension(500, 340)); // Set preferred size
         dormRepartitionPanel.add(scrollPane);
+    }
+
+    public static String formatTipTaxa(Boolean faraTaxa) {
+        if (faraTaxa)
+            return "Fara Taxa";
+        return "Cu Taxa";
     }
 }

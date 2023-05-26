@@ -8,7 +8,9 @@ public class BookingDetails {
 
     private String medie;
 
-    public BookingDetails(String userId, String colegCamera, String domiciliu, String an, String medieAdmitere, String medieAnuala, String medie) {
+    private Boolean faraTaxa;
+
+    public BookingDetails(String userId, String colegCamera, String domiciliu, String an, String medieAdmitere, String medieAnuala, String medie, Boolean faraTaxa) {
 
         this.userId = userId;
         this.colegCamera = colegCamera;
@@ -17,6 +19,7 @@ public class BookingDetails {
         this.medieAdmitere = medieAdmitere;
         this.medieAnuala = medieAnuala;
         this.medie = medie;
+        this.faraTaxa = faraTaxa;
     }
     public String getUserId() {
         return userId;
@@ -43,6 +46,8 @@ public class BookingDetails {
     public String getMedie() {
      return medie;
     }
+
+    public Boolean getFaraTaxa() { return faraTaxa; }
 }
 
 
