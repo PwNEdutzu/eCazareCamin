@@ -118,6 +118,14 @@ public class StudentTabs extends WindowRouter {
             String medieAdmitere = medieAdmitereField.getText();
 
 
+            // Check if Student Details Exists before sending a booking dorm request
+            JStudentDetails.getStudentDetails(String.valueOf(loggedUser.getId()));
+            StudentDetails studentDetails = Storage.getStudentDetails();
+            if (studentDetails == null) {
+                JOptionPane.showMessageDialog(null, "Te rugam sa completezi mai intai Detalii Student");
+                return;
+            }
+
             try {
                 JBookingDetails.addBookingDetails(loggedUser.getId(), colegCamera, domiciliu, an, medieAnuala, medieAdmitere);
                 StudentTabs.requestDormBooking.removeAll();
