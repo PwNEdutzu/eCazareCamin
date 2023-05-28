@@ -5,10 +5,18 @@ import java.util.List;
 
 public class DormRepartitionList {
     public static void create(JPanel dormRepartitionPanel) {
+        boolean repartitionListGenerated = JRepartitionList.checkRepartitionList();
+        // Show "Generate Btn" or repartition list table based on repartitionListGenerated in database
+        if (repartitionListGenerated) {
+            createList(dormRepartitionPanel);
+            return;
+        }
+
         JButton generateBtn = new JButton("Creaza lista de repartizare in camin");
         dormRepartitionPanel.add(generateBtn);
-
         generateBtn.addActionListener(ae -> {
+            // Mark creation of the repartition list in database
+            JRepartitionList.insertGeneratedValue(true);
             createList(dormRepartitionPanel);
             // Remove Generate List button from panel
             dormRepartitionPanel.remove(generateBtn);

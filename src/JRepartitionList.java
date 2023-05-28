@@ -1,6 +1,54 @@
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public class JRepartitionList extends JConnection {
+
+    // Check if a Membru Comisie account generated a Repartition List
+    public static boolean checkRepartitionList() {
+        boolean generatedValue = false;
+        // Select the column generated from repartitin_list table where generated is true
+        String query = "SELECT generated FROM repartition_list WHERE generated = ?";
+
+        try {
+            PreparedStatement statement = conn.prepareStatement(query);
+            statement.setBoolean(1, true);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                generatedValue = resultSet.getBoolean("generated");
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            System.err.println("Error while checking repartiton_list generated column: " + e.getMessage());
+        }
+
+        return generatedValue;
+    }
+
+    // If a Membru Comisie generates a repartition list we want to save this information in repartition_list table
+    // Based on this value of generated column we will show the Repartition List Tab
+    public static boolean insertGeneratedValue(boolean generatedValue) {
+        boolean success = false;
+        String query = "INSERT INTO repartition_list (generated) VALUES (?)";
+
+        try {
+            PreparedStatement statement = conn.prepareStatement(query);
+            statement.setBoolean(1, generatedValue);
+            int rowsInserted = statement.executeUpdate();
+            if (rowsInserted > 0) {
+                success = true;
+            }
+            statement.close();
+        } catch (SQLException e) {
+            System.err.println("Error while inserting generated value: " + e.getMessage());
+        }
+
+        return success;
+    }
+
+    // Create Repartition List based on booking_details table
     public static List<BookingDetails> getRepartitionList() {
         List<BookingDetails> repartitionList = JBookingDetails.getBookingList();
 
