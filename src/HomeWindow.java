@@ -21,8 +21,10 @@ public class HomeWindow extends WindowRouter {
         logoutButton.addActionListener(ae -> {
             logoutUser();
         });
-
-        JButton printButton = new JButton("Printeaza");
+        Icon testIcon = new ImageIcon("./Images/printer icon.png");
+        Icon printIcon = new ImageIcon(((ImageIcon) testIcon).getImage().getScaledInstance(30, 22, java.awt.Image.SCALE_SMOOTH));
+        JButton printButton = new JButton(printIcon);
+        printButton.setPreferredSize(new Dimension(35, 25));
         printButton.addActionListener(ae ->{
             JTabbedPane panelType = StudentTabs.studentJTabs;
 
@@ -37,7 +39,7 @@ public class HomeWindow extends WindowRouter {
             JPanel panelToPrint = (JPanel) selectedTabComponent;
             Print.init(panelToPrint);
         });
-
+        AccountSettings.init(logoutPanel);
         logoutPanel.add(printButton);
         logoutPanel.add(logoutButton);
 
