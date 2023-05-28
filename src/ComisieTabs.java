@@ -2,14 +2,16 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ComisieTabs extends WindowRouter {
+    public static final JPanel bookingListPanel = new JPanel();
+    public static final JPanel dormRepartitionPanel = new JPanel();
     public static void create() {
         JTabbedPane comisieJTabs = new JTabbedPane();
 
-        JPanel tab1 = new JPanel();
-        JPanel tab2 = new JPanel();
+        BookingList.create(bookingListPanel);
+        DormRepartitionList.create(dormRepartitionPanel);
 
-        comisieJTabs.addTab("Tab 1", tab1);
-        comisieJTabs.addTab("Tab 2", tab2);
+        comisieJTabs.addTab("Lista cereri de cazare", bookingListPanel);
+        comisieJTabs.addTab("Repartizare", dormRepartitionPanel);
 
         // Add comisie tabs to home window panel
         homeWindowPanel.add(comisieJTabs, BorderLayout.CENTER);

@@ -49,5 +49,7 @@ public class WindowRouter extends JPanel {
         StudentTabs.studentDetailsPanel.removeAll();
         StudentTabs.requestDormBooking.removeAll();
         StudentTabs.bookingListPanel.removeAll();
+        ComisieTabs.bookingListPanel.removeAll();
+        ComisieTabs.dormRepartitionPanel.removeAll();
     }
 }

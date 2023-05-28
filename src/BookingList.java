@@ -21,9 +21,10 @@ public class BookingList {
             // Get User by booking user id and display the username
             // TODO: From where should we get the user name? Student or Users table?
             User userById = JUsers.getUserById(booking.getUserId(), "users");
+            User getColegCameraNameById = JUsers.getUserById(booking.getColegCamera(), "users");
             Object[] rowData = {
                     userById.getUsername(),
-                    booking.getColegCamera(),
+                    getColegCameraNameById.getUsername(),
                     booking.getDomiciliu(),
                     booking.getAn(),
                     booking.getMedieAnuala(),

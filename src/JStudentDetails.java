@@ -92,16 +92,18 @@ public class JStudentDetails extends JConnection {
             e.printStackTrace();
         }
     }
-    public static List<String> getStudentsName()  {
-        List<String> studentsNameList = new ArrayList<>();
+    public static List<StudentDetails> getStudentsName()  {
+        List<StudentDetails> studentsNameList = new ArrayList<>();
         try {
             String query = "SELECT * FROM students_details";
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
+                String userId = rs.getString("userId");
                 String nume = rs.getString("nume");
                 String prenume = rs.getString("prenume");
-                studentsNameList.add(nume+" "+prenume);
+                StudentDetails student = new StudentDetails(userId, nume, prenume, "", "", "", "", "", "");
+                studentsNameList.add(student);
             }
         } catch (SQLException e) {
             e.printStackTrace();

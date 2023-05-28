@@ -3,6 +3,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class JBookingDetails extends JConnection {
@@ -11,8 +13,13 @@ public class JBookingDetails extends JConnection {
             int userId, String colegCamera, String domiciliu, String an, String medieAnuala, String medieAdmitere)
             throws SQLException {
         String query = "INSERT INTO booking_details " +
-                "(userId, colegCamera, domiciliu, an, medieAnuala, medieAdmitere) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+                "(userId, colegCamera, domiciliu, an, medieAnuala, medieAdmitere, medie, faraTaxa) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        User loggedUser = Storage.getLoggedUser();
+        JStudentDetails.getStudentDetails(String.valueOf(loggedUser.getId()));
+        StudentDetails studentDetails = Storage.getStudentDetails();
+
         try {
             PreparedStatement statement = conn.prepareStatement(query);
             statement.setString(1, String.valueOf(userId));
@@ -21,6 +28,18 @@ public class JBookingDetails extends JConnection {
             statement.setString(4, an);
             statement.setString(5, medieAnuala);
             statement.setString(6, medieAdmitere);
+            // Send medie to sortBy medie anuala/admitere
+            if (medieAnuala.length() != 0) {
+                statement.setString(7, medieAnuala); // medie column to sortBy
+            }
+            if (medieAdmitere.length() != 0) {
+                statement.setString(7, medieAdmitere); // medie column to sortBy
+            }
+
+            // booking_details table has a column named "faraTaxa",
+            // based on students details we send if it's true or not (1 or 0)
+            statement.setBoolean(8, studentDetails.getTipDeStudii().equals("Fara Taxa"));
+
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("Booking details added");
@@ -45,7 +64,7 @@ public class JBookingDetails extends JConnection {
                 String medieAnuala = rs.getString("medieAnuala");
                 String medieAdmitere = rs.getString("medieAdmitere");
 
-                BookingDetails bookingDetails = new BookingDetails(userId, colegCamera, domiciliu, an, medieAnuala, medieAdmitere);
+                BookingDetails bookingDetails = new BookingDetails(userId, colegCamera, domiciliu, an, medieAnuala, medieAdmitere, "", false);
                 Storage.setBookingDetails(bookingDetails);
             }
         } catch (SQLException e) {
@@ -67,17 +86,10 @@ public class JBookingDetails extends JConnection {
                 String an = rs.getString("an");
                 String medieAnuala = rs.getString("medieAnuala");
                 String medieAdmitere = rs.getString("medieAdmitere");
-                BookingDetails bookingDetails = new BookingDetails(userId, colegCamera, domiciliu, an, medieAnuala, medieAdmitere);
+                String medie = rs.getString("medie");
+                Boolean faraTaxa = rs.getBoolean("faraTaxa");
+                BookingDetails bookingDetails = new BookingDetails(userId, colegCamera, domiciliu, an, medieAnuala, medieAdmitere, medie, faraTaxa);
                 bookingList.add(bookingDetails);
-            }
-            for (BookingDetails booking : bookingList) {
-                System.out.println(booking.getUserId());
-                System.out.println(booking.getColegCamera());
-                System.out.println(booking.getDomiciliu());
-                System.out.println(booking.getAn());
-                System.out.println(booking.getMedieAnuala());
-                System.out.println(booking.getMedieAdmitere());
-                System.out.println("---- BOOKING ----");
             }
         } catch (SQLException e) {
             e.printStackTrace();
