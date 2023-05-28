@@ -21,6 +21,24 @@ public class HomeWindow extends WindowRouter {
         logoutButton.addActionListener(ae -> {
             logoutUser();
         });
+
+        JButton printButton = new JButton("Printeaza");
+        printButton.addActionListener(ae ->{
+            JTabbedPane panelType = StudentTabs.studentJTabs;
+
+            if (loggedUser.getAccountType().equals(AccountTypes.accountTypeComisie)) {
+                panelType = ComisieTabs.comisieJTabs;
+            }
+            int selectedIndex = panelType.getSelectedIndex();
+            String selectedTabTitle = panelType.getTitleAt(selectedIndex);
+            Component selectedTabComponent = panelType.getComponentAt(selectedIndex);
+
+            System.out.println("Selected Tab Title: " + selectedTabTitle);
+            JPanel panelToPrint = (JPanel) selectedTabComponent;
+            Print.init(panelToPrint);
+        });
+
+        logoutPanel.add(printButton);
         logoutPanel.add(logoutButton);
 
         // Create topside panel and add user and logout button panels

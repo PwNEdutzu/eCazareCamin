@@ -4,8 +4,8 @@ import java.awt.*;
 public class ComisieTabs extends WindowRouter {
     public static final JPanel bookingListPanel = new JPanel();
     public static final JPanel dormRepartitionPanel = new JPanel();
+    public static final JTabbedPane comisieJTabs = new JTabbedPane();
     public static void create() {
-        JTabbedPane comisieJTabs = new JTabbedPane();
 
         BookingList.create(bookingListPanel);
         DormRepartitionList.create(dormRepartitionPanel);

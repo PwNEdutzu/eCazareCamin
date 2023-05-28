@@ -32,6 +32,9 @@ public class DormRepartitionList {
         for (BookingDetails repartition : repartitionList) {
             User userById = JUsers.getUserById(repartition.getUserId(), "users");
             User getColegCameraNameById = JUsers.getUserById(repartition.getColegCamera(), "users");
+            if (getColegCameraNameById == null) {
+                continue;
+            }
             Object[] rowData = {
                     userById.getUsername(),
                     getColegCameraNameById.getUsername(),

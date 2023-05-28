@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class StudentTabs extends WindowRouter {
@@ -12,10 +11,10 @@ public class StudentTabs extends WindowRouter {
     public static final JPanel requestDormBooking = new JPanel();
     public static final JPanel bookingListPanel = new JPanel();
 
-    public static void create() {
-        // Student details panel creation
-        JTabbedPane studentJTabs = new JTabbedPane();
+    // Student details panel creation
+    public static final JTabbedPane studentJTabs = new JTabbedPane();
 
+    public static void create() {
         // Adding tabs to studentDetailsPane
         createStudentsDetails();
         createBookingDetails();
