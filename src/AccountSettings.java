@@ -33,67 +33,61 @@ public class AccountSettings {
                 "Actualizare parola",
                 JOptionPane.OK_CANCEL_OPTION);
 
+        if (panelResult == JOptionPane.CANCEL_OPTION) {
+            currentPassField.setText("");
+            newPassField.setText("");
+            confirmPassField.setText("");
+            return;
+        }
+
         if (panelResult == JOptionPane.OK_OPTION) {
             String currentPassword = String.valueOf(currentPassField.getPassword());
             String newPassword = String.valueOf(newPassField.getPassword());
             String confirmedPassword = String.valueOf(confirmPassField.getPassword());
 
             boolean emptyFields = newPassword.isEmpty() || confirmedPassword.isEmpty();
+            boolean newPasswordMatch = confirmedPassword.equals(newPassword);
 
             if (emptyFields) {
-                JOptionPane.showMessageDialog(null, "Completeaza toate campurile!");
-                panelResult = JOptionPane.showConfirmDialog(
-                        null, changePassPanel,
-                        "Actualizare parola",
-                        JOptionPane.OK_CANCEL_OPTION);
-
+                alert("Completeaza toate campurile!");
+                changePasswordPanel();
                 return;
             }
+
             if (currentPassword.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Introdu parola actuala");
-                panelResult = JOptionPane.showConfirmDialog(
-                        null, changePassPanel,
-                        "Actualizare parola",
-                        JOptionPane.OK_CANCEL_OPTION);
-
+                alert("Introdu parola actuala");
+                changePasswordPanel();
                 return;
             }
-            boolean newPasswordMatch = confirmedPassword.equals(newPassword);
             if (!newPasswordMatch) {
-                JOptionPane.showMessageDialog(null, "New passwords don't match");
-                panelResult = JOptionPane.showConfirmDialog(
-                        null, changePassPanel,
-                        "Actualizare parola",
-                        JOptionPane.OK_CANCEL_OPTION);
-
+                alert("New passwords don't match");
+                changePasswordPanel();
                 return;
             }
             if (newPassword.equals(currentPassword)) {
-                JOptionPane.showMessageDialog(null, "New password can't be the same as the old password!");
-                panelResult = JOptionPane.showConfirmDialog(
-                        null, changePassPanel,
-                        "Actualizare parola",
-                        JOptionPane.OK_CANCEL_OPTION);
+                alert("New password can't be the same as the old password!");
+                changePasswordPanel();
+            }
 
+            boolean passUpdateWithSuccess = false;
+            try {
+                User loggedUser = Storage.getLoggedUser();
+                passUpdateWithSuccess = JAuthentication.updatePassword(String.valueOf(loggedUser.getId()), newPassword);
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
+            }
+
+            if (!passUpdateWithSuccess) {
+                alert("Password updated failed");
+                changePasswordPanel();
                 return;
             }
-//            boolean passUpdateWithSuccess = false;
-//            try {
-//                passUpdateWithSuccess  = JAuthentication.updatePassword(loggedUser.getId(), newPassword);
-//            } catch (SQLException throwables) {
-//                throwables.printStackTrace();
-//            }
-//
-//            if (!passUpdateWithSuccess) {
-//                return;
-//            }
 
-            if (panelResult == JOptionPane.CANCEL_OPTION) {
-                currentPassField.setText("");
-                newPassField.setText("");
-                confirmPassField.setText("");
-                }
-            }
+            alert("Password updated!");
+        }
+    }
+        public static void alert(String message) {
+            JOptionPane.showMessageDialog(null, message);
         }
     }
 

@@ -95,7 +95,7 @@ public class JAuthentication extends JConnection {
     public static boolean updatePassword(String userId, String newPassword) throws SQLException {
         boolean success = false;
 
-        String query = "UPDATE users SET password = ? WHERE userId = ?";
+        String query = "UPDATE users SET password = ? WHERE id = ?";
         try {
             PreparedStatement updateStatement = conn.prepareStatement(query);
             updateStatement.setString(1, newPassword);
