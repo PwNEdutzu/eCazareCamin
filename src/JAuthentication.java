@@ -92,4 +92,24 @@ public class JAuthentication extends JConnection {
             e.printStackTrace();
         }
     }
+    public static boolean updatePassword(String userId, String newPassword) throws SQLException {
+        boolean success = false;
+
+        String query = "UPDATE users SET password = ? WHERE id = ?";
+        try {
+            PreparedStatement updateStatement = conn.prepareStatement(query);
+            updateStatement.setString(1, newPassword);
+            updateStatement.setString(2, userId);
+            int rowsAffected = updateStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Password updated successfully.");
+                success = true;
+            }
+            updateStatement.close();
+        } catch (SQLException e) {
+            System.err.println("Error while updating password: " + e.getMessage());
+        }
+
+        return success;
+    }
 }

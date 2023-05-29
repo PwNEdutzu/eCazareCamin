@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.ImageIcon;
 import java.awt.*;
+import java.sql.SQLException;
 
 public class AccountSettings {
     public static void init(JPanel accountPanel) {
@@ -13,13 +14,12 @@ public class AccountSettings {
             changePasswordPanel();
         });
     }
-
     public static void changePasswordPanel() {
         JPanel changePassPanel = new JPanel();
-        changePassPanel.setLayout((new BoxLayout (changePassPanel, BoxLayout.Y_AXIS)));
-        JTextField currentPassField = new JTextField(10);
-        JTextField newPassField = new JTextField(10);
-        JTextField confirmPassField = new JTextField(10);
+        changePassPanel.setLayout((new BoxLayout(changePassPanel, BoxLayout.Y_AXIS)));
+        JPasswordField currentPassField = new JPasswordField(10);
+        JPasswordField newPassField = new JPasswordField(10);
+        JPasswordField confirmPassField = new JPasswordField(10);
 
         changePassPanel.add(new JLabel("Current Password"));
         changePassPanel.add(currentPassField);
@@ -32,6 +32,62 @@ public class AccountSettings {
                 null, changePassPanel,
                 "Actualizare parola",
                 JOptionPane.OK_CANCEL_OPTION);
+
+        if (panelResult == JOptionPane.CANCEL_OPTION) {
+            currentPassField.setText("");
+            newPassField.setText("");
+            confirmPassField.setText("");
+            return;
+        }
+
+        if (panelResult == JOptionPane.OK_OPTION) {
+            String currentPassword = String.valueOf(currentPassField.getPassword());
+            String newPassword = String.valueOf(newPassField.getPassword());
+            String confirmedPassword = String.valueOf(confirmPassField.getPassword());
+
+            boolean emptyFields = newPassword.isEmpty() || confirmedPassword.isEmpty();
+            boolean newPasswordMatch = confirmedPassword.equals(newPassword);
+
+            if (emptyFields) {
+                alert("Completeaza toate campurile!");
+                changePasswordPanel();
+                return;
+            }
+
+            if (currentPassword.isEmpty()) {
+                alert("Introdu parola actuala");
+                changePasswordPanel();
+                return;
+            }
+            if (!newPasswordMatch) {
+                alert("New passwords don't match");
+                changePasswordPanel();
+                return;
+            }
+            if (newPassword.equals(currentPassword)) {
+                alert("New password can't be the same as the old password!");
+                changePasswordPanel();
+            }
+
+            boolean passUpdateWithSuccess = false;
+            try {
+                User loggedUser = Storage.getLoggedUser();
+                passUpdateWithSuccess = JAuthentication.updatePassword(String.valueOf(loggedUser.getId()), newPassword);
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
+            }
+
+            if (!passUpdateWithSuccess) {
+                alert("Password updated failed");
+                changePasswordPanel();
+                return;
+            }
+
+            alert("Password updated!");
+        }
+    }
+        public static void alert(String message) {
+            JOptionPane.showMessageDialog(null, message);
+        }
     }
 
-}

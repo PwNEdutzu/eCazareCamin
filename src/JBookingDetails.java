@@ -16,8 +16,8 @@ public class JBookingDetails extends JConnection {
                 "(userId, colegCamera, domiciliu, an, medieAnuala, medieAdmitere, medie, faraTaxa) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        User loggedUser = Storage.getLoggedUser();
-        JStudentDetails.getStudentDetails(String.valueOf(loggedUser.getId()));
+        User loggedUser = Storage.getLoggedUser();  // get logged user details
+        JStudentDetails.getStudentDetails(String.valueOf(loggedUser.getId())); // get student details
         StudentDetails studentDetails = Storage.getStudentDetails();
 
         try {
